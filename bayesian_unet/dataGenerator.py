@@ -1,7 +1,8 @@
 import os
 import tensorflow as tf
-from tensorflow.keras.preprocessing.image import ImageDataGenerator
 import matplotlib.pyplot as plt
+import numpy as np
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
 
 class dataGenerator:
@@ -69,22 +70,20 @@ class dataGenerator:
                 image, label = next(datagen)
                 self.display([image[0], label[0]])
 
+    def load_pred(inf_path):   
+        return np.load(inf_path+'preds.npy')
 
 
+# if __name__ == '__main__':
+#     dataDir = '/content/gdrive/MyDrive/Task02_Heart/Task02_Heart/slices/'
+#     dataDirTrainImgs = os.path.join(dataDir, 'imgs/')
+#     dataDirTrainLabels = os.path.join(dataDir, 'labels/')
 
+#     dataDirTestImgs = os.path.join(dataDir, 'testImgs/')
+#     dataDirTestLabels = os.path.join(dataDir, 'testLabels/')
 
+#     generator = dataGenerator(dataDirTrainImgs, dataDirTrainLabels)
+#     train_generator = generator.segmentation((320,320))
 
-if __name__ == '__main__':
-    dataDir = '/content/gdrive/MyDrive/Task02_Heart/Task02_Heart/slices/'
-    dataDirTrainImgs = os.path.join(dataDir, 'imgs/')
-    dataDirTrainLabels = os.path.join(dataDir, 'labels/')
-
-    dataDirTestImgs = os.path.join(dataDir, 'testImgs/')
-    dataDirTestLabels = os.path.join(dataDir, 'testLabels/')
-
-    generator = dataGenerator(dataDirTrainImgs, dataDirTrainLabels)
-    train_generator = generator.segmentation((320,320))
-
-    generator = dataGenerator(dataDirTestImgs, dataDirTestLabels)
-    test_generator = generator.segmentation((320,320))
-    
+#     generator = dataGenerator(dataDirTestImgs, dataDirTestLabels)
+#     test_generator = generator.segmentation((320,320))

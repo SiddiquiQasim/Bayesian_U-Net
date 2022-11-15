@@ -1,11 +1,12 @@
 import os
-from uNet import uNet
-from dataGenerator import dataGenerator
-from Loss import crossEntropyLoss
-from Metrics import ioU, dice, mAP
 import tensorflow as tf
-from eval_plot import TrainingCallback
 from argparse import ArgumentParser
+
+from bayesian_unet.model_2d.uNet import uNet
+from bayesian_unet.dataGenerator import dataGenerator
+from bayesian_unet.addon.Loss import crossEntropyLoss
+from bayesian_unet.addon.Metrics import ioU, dice, mAP
+from bayesian_unet.addon.eval_plot import TrainingCallback
 
 def train(img_shape, mcd, bayesian, data_dir, num_of_epochs=100):
     data_dir_train_imgs = os.path.join(data_dir, 'imgs/')
@@ -64,9 +65,13 @@ def train(img_shape, mcd, bayesian, data_dir, num_of_epochs=100):
 
 if __name__ == '__main__':
 
-    parser = ArgumentParser()
-    parser.add_argument("index", type=int, help="Save model index")
-    args = parser.parse_args()
-    idx = args.index
-
-    train(img_shape=(320,320), mcd=False, bayesian=False, data_dir='data/slices/', num_of_epochs=100)
+    '''
+    img_shape : shape of the input/label image
+    mcd=True : if estimating uncertainty with Monte-Carlo Dropout
+    bayesian=True : if estimating uncertainty with Bayesian U-Net
+    mcd=False, bayesain=False : if estimating uncertainty with Deep Ensemble
+    data_dir='data/slices/' : location of images/labels
+    num_of_epochs=100 : number of epochs to train
+    idx=0 : model index id if using Deep Ensemble
+    '''
+    train(img_shape=(320,320), mcd=False, bayesian=False, data_dir='data/slices/', num_of_epochs=100, idx=0)

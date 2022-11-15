@@ -4,11 +4,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 import tensorflow as tf
 from tqdm import tqdm
-from dataGenerator import dataGenerator
-from inference import load_pred
+from bayesian_unet.dataGenerator import dataGenerator
 
-
-def inference(img_shape, mcd, bayesian, data_dir, idx):
+def visualize(img_shape, mcd, bayesian, data_dir, idx):
     if mcd==True:
         output_img = 'MCD/uncertainty_vis/'
         inf_path = 'MCD/inference/'
@@ -24,7 +22,7 @@ def inference(img_shape, mcd, bayesian, data_dir, idx):
     data_dir_test_imgs = os.path.join(data_dir, 'testImgs/')
     data_dir_test_labels = os.path.join(data_dir, 'testLabels/')
 
-    preds = load_pred(inf_path)
+    preds = dataGenerator.load_pred(inf_path)
     pred_mean = np.mean(preds, axis=0, keepdims=True)
     pred_std = np.std(preds, axis=0, keepdims=True)
 
@@ -40,3 +38,15 @@ def inference(img_shape, mcd, bayesian, data_dir, idx):
         plt.imshow(tf.keras.preprocessing.image.array_to_img(display_list[j]), cmap='gray')   
     plt.savefig(output_img+'uncertainty_img-{}.png'.format(idx))
     return
+
+if __name__ == '__main__':
+
+    '''
+    img_shape : shape of the input/label image
+    mcd=True : if estimating uncertainty with Monte-Carlo Dropout
+    bayesian=True : if estimating uncertainty with Bayesian U-Net
+    mcd=False, bayesain=False : if estimating uncertainty with Deep Ensemble
+    data_dir='data/slices/' : location of images/labels
+    idx=0 : model index id if using Deep Ensemble
+    '''
+    visualize(img_shape=(320,320), mcd=False, bayesian=False, data_dir='data/slices/', idx=0)

@@ -1,8 +1,9 @@
 import os
-from uNet import uNet
-from dataGenerator import dataGenerator
 import numpy as np
 from tqdm import tqdm
+
+from bayesian_unet.model_2d.uNet import uNet
+from bayesian_unet.dataGenerator import dataGenerator
 
 
 def inference(img_shape, mcd, bayesian, data_dir, fpass):
@@ -54,7 +55,14 @@ def inference(img_shape, mcd, bayesian, data_dir, fpass):
     np.save(inf_path+'preds.npy', preds)
     return
 
+if __name__ == '__main__':
 
-def load_pred(inf_path):   
-    return np.load(inf_path+'preds.npy')
-
+    '''
+    img_shape : shape of the input/label image
+    mcd=True : if estimating uncertainty with Monte-Carlo Dropout
+    bayesian=True : if estimating uncertainty with Bayesian U-Net
+    mcd=False, bayesain=False : if estimating uncertainty with Deep Ensemble
+    data_dir='data/slices/' : location of images/labels
+    fpass=10 : number of sample to estimate uncertainty
+    '''
+    inference(img_shape=(320,320), mcd=False, bayesian=False, data_dir='data/slices/', fpass=10)
